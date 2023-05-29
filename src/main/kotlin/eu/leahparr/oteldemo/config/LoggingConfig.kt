@@ -1,6 +1,5 @@
 package eu.leahparr.oteldemo.config
 
-import io.opentelemetry.context.Context
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InjectionPoint
@@ -31,9 +30,6 @@ class LoggingConfig {
           modifyResponseBodyFilter: ModifyResponseBodyGatewayFilterFactory,
   ): GlobalFilter = object : GlobalFilter, Ordered {
     override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-      val method = exchange.request.method
-      val path = exchange.request.uri.toString()
-      val headers = exchange.request.headers
 
       logger.info("1111111111111111111111111")
       var responseBody = ""

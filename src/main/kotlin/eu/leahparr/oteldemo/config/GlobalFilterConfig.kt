@@ -13,7 +13,6 @@ import org.springframework.web.server.ServerWebExchange
 
 @Configuration
 class GlobalFilterConfig(
-        private val logger: Logger,
         private val testService: TestService) {
 
   @Bean
