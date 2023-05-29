@@ -1,67 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    },
-    {
-      "name": "DS_ELASTICSEARCH",
-      "label": "Elasticsearch",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "elasticsearch",
-      "pluginName": "Elasticsearch"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.1.7"
-    },
-    {
-      "type": "panel",
-      "id": "logs",
-      "name": "Logs",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "elasticsearch",
-      "name": "Elasticsearch",
-      "version": "1.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -84,10 +21,11 @@
       }
     ]
   },
+  "description": "Observe Spring Boot application with three pillars of observability: Traces (Tempo), Metrics (Prometheus), Logs (Elasticsearch) on Grafana through OpenTelemetry and OpenMetrics.",
   "editable": true,
   "fiscalYearStartMonth": 0,
+  "gnetId": 17175,
   "graphTooltip": 0,
-  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -133,7 +71,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -142,7 +80,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(http_server_requests_seconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
+          "expr": "sum(http_server_requests_milliseconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
           "interval": "",
           "legendFormat": "",
           "range": true,
@@ -195,7 +133,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -204,7 +142,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(uri) (http_server_requests_seconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
+          "expr": "sum by(uri) (http_server_requests_milliseconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
           "interval": "",
           "legendFormat": "{{method}} {{uri}}",
           "range": true,
@@ -239,7 +177,7 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -262,9 +200,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "valueMode": "color"
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -273,7 +212,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(uri)(http_server_requests_seconds_sum{exported_job=\"$app_name\"}) / sum by(uri)(http_server_requests_seconds_count{exported_job=\"$app_name\"})",
+          "expr": "sum by(uri)(http_server_requests_milliseconds_sum{exported_job=\"$app_name\"}) / sum by(uri)(http_server_requests_milliseconds_count{exported_job=\"$app_name\"})",
           "interval": "",
           "legendFormat": "{{method}} {{uri}}",
           "range": true,
@@ -331,7 +270,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -340,7 +279,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(http_server_requests_seconds_count{exported_job=\"$app_name\", outcome=\"SERVER_ERROR\"})",
+          "expr": "sum(http_server_requests_milliseconds_count{exported_job=\"$app_name\", outcome=\"SERVER_ERROR\"})",
           "interval": "",
           "legendFormat": "",
           "range": true,
@@ -437,7 +376,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(uri) (http_server_requests_seconds_count{exported_job=\"$app_name\", status=~\"2.*\", uri!=\"/actuator/prometheus\"}) / sum by(uri) (http_server_requests_seconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
+          "expr": "sum by(uri) (http_server_requests_milliseconds_count{exported_job=\"$app_name\", status=~\"2.*\", uri!=\"/actuator/prometheus\"}) / sum by(uri) (http_server_requests_milliseconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
           "interval": "",
           "legendFormat": "{{path}}",
           "range": true,
@@ -533,7 +472,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(uri) (http_server_requests_seconds_count{exported_job=\"$app_name\", status=~\"5.*\", uri!=\"/actuator/prometheus\"}) / sum by(uri) (http_server_requests_seconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
+          "expr": "sum by(uri) (http_server_requests_milliseconds_count{exported_job=\"$app_name\", status=~\"5.*\", uri!=\"/actuator/prometheus\"}) / sum by(uri) (http_server_requests_milliseconds_count{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"})",
           "interval": "",
           "legendFormat": "{{uri}}",
           "range": true,
@@ -628,7 +567,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "histogram_quantile(.99,sum(rate(http_server_requests_seconds_bucket{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"}[1m])) by(uri, le))",
+          "expr": "histogram_quantile(.99,sum(rate(http_server_requests_milliseconds_bucket{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"}[1m])) by(uri, le))",
           "interval": "",
           "legendFormat": "{{uri}}",
           "range": true,
@@ -723,7 +662,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "histogram_quantile(.95,sum(rate(http_server_requests_seconds_bucket{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"}[1m])) by(uri, le))",
+          "expr": "histogram_quantile(.95,sum(rate(http_server_requests_milliseconds_bucket{exported_job=\"$app_name\", uri!=\"/actuator/prometheus\"}[1m])) by(uri, le))",
           "interval": "",
           "legendFormat": "{{uri}}",
           "range": true,
@@ -818,7 +757,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(uri)(rate(http_server_requests_seconds_count{exported_job=\"$app_name\"}[1m]))",
+          "expr": "sum by(uri)(rate(http_server_requests_milliseconds_count{exported_job=\"$app_name\"}[1m]))",
           "interval": "",
           "legendFormat": "{{uri}}",
           "range": true,
@@ -1008,31 +947,56 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
         "hide": 0,
+        "includeAll": false,
         "label": "datasource",
+        "multi": false,
         "name": "DS_PROMETHEUS",
         "options": [],
         "query": "prometheus",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "name": "DS_ELASTICSEARCH",
-        "label": "Elasticsearch",
+        "current": {
+          "selected": false,
+          "text": "No data sources found",
+          "value": ""
+        },
         "description": "",
-        "type": "datasource",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Elasticsearch",
+        "multi": false,
+        "name": "DS_ELASTICSEARCH",
+        "options": [],
         "pluginId": "elasticsearch",
-        "pluginName": "Elasticsearch"
+        "pluginName": "Elasticsearch",
+        "query": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "otel-demo",
+          "value": "otel-demo"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -1085,8 +1049,6 @@
   "timezone": "",
   "title": "Spring Boot Observability",
   "uid": "dLsDQIUnzb",
-  "version": 2,
-  "weekStart": "",
-  "gnetId": 17175,
-  "description": "Observe Spring Boot application with three pillars of observability: Traces (Tempo), Metrics (Prometheus), Logs (Elasticsearch) on Grafana through OpenTelemetry and OpenMetrics."
+  "version": 6,
+  "weekStart": ""
 }

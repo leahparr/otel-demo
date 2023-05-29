@@ -470,7 +470,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(http_server_requests_seconds_count{exported_job=\"$application\", instance=\"$instance\"}[1m]))",
+          "expr": "sum(rate(http_server_requests_milliseconds_count{exported_job=\"$application\", instance=\"$instance\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "HTTP",
@@ -559,7 +559,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(http_server_requests_seconds_count{exported_job=\"$application\", instance=\"$instance\", status=~\"5..\"}[1m]))",
+          "expr": "sum(rate(http_server_requests_milliseconds_count{exported_job=\"$application\", instance=\"$instance\", status=~\"5..\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "HTTP - 5xx",
@@ -645,7 +645,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(http_server_requests_seconds_sum{exported_job=\"$application\", instance=\"$instance\", status!~\"5..\"}[1m]))/sum(rate(http_server_requests_seconds_count{exported_job=\"$application\", instance=\"$instance\", status!~\"5..\"}[1m]))",
+          "expr": "sum(rate(http_server_requests_milliseconds_sum{exported_job=\"$application\", instance=\"$instance\", status!~\"5..\"}[1m]))/sum(rate(http_server_requests_milliseconds_count{exported_job=\"$application\", instance=\"$instance\", status!~\"5..\"}[1m]))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -656,7 +656,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "max(http_server_requests_seconds_max{exported_job=\"$application\", instance=\"$instance\", status!~\"5..\"})",
+          "expr": "max(http_server_requests_milliseconds_max{exported_job=\"$application\", instance=\"$instance\", status!~\"5..\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -745,7 +745,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "tomcat_threads_busy_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "tomcat_threads_busy{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -756,7 +756,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "tomcat_threads_current_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "tomcat_threads_current{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -767,7 +767,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "tomcat_threads_config_max_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "tomcat_threads_config_max{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1690,7 +1690,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "jvm_threads_live_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "jvm_threads_live{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "live",
@@ -1702,7 +1702,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "jvm_threads_daemon_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "jvm_threads_daemon{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "daemon",
@@ -1714,7 +1714,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "jvm_threads_peak_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "jvm_threads_peak{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "peak",
@@ -1830,7 +1830,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "jvm_threads_states_threads{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "jvm_threads_states{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{state}}",
@@ -1916,7 +1916,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(jvm_gc_pause_seconds_sum{exported_job=\"$application\", instance=\"$instance\"}[1m])) by (application, instance) / on(application, instance) system_cpu_count",
+          "expr": "sum(rate(jvm_gc_pause_milliseconds_sum{exported_job=\"$application\", instance=\"$instance\"}[1m])) by (application, instance) / on(application, instance) system_cpu_count",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "CPU time spent on GC",
@@ -2566,7 +2566,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(jvm_gc_pause_seconds_count{exported_job=\"$application\", instance=\"$instance\"}[1m])",
+          "expr": "rate(jvm_gc_pause_milliseconds_count{exported_job=\"$application\", instance=\"$instance\"}[1m])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -2644,7 +2644,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(jvm_gc_pause_seconds_sum{exported_job=\"$application\", instance=\"$instance\"}[1m])/rate(jvm_gc_pause_seconds_count{exported_job=\"$application\", instance=\"$instance\"}[1m])",
+          "expr": "rate(jvm_gc_pause_milliseconds_sum{exported_job=\"$application\", instance=\"$instance\"}[1m])/rate(jvm_gc_pause_milliseconds_count{exported_job=\"$application\", instance=\"$instance\"}[1m])",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -2656,7 +2656,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "jvm_gc_pause_seconds_max{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "jvm_gc_pause_milliseconds_max{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -2855,7 +2855,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "jvm_classes_loaded_classes{exported_job=\"$application\", instance=\"$instance\"}",
+          "expr": "jvm_classes_loaded{exported_job=\"$application\", instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "loaded",
@@ -2946,7 +2946,7 @@
           "datasource": {
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "delta(jvm_classes_loaded_classes{exported_job=\"$application\",instance=\"$instance\"}[1m])",
+          "expr": "delta(jvm_classes_loaded{exported_job=\"$application\",instance=\"$instance\"}[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
