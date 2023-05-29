@@ -1,0 +1,6 @@
+<included>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <property name="LOG_LEVEL_PATTERN" value="%5p [%X{traceId:-},%X{spanId:-},%X{accountId:-}]"/>
+  <property name ="CONSOLE_LOG_PATTERN"
+    value="%clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN}){magenta} [%thread] %-5level %logger{36} - %msg%n"/>
+</included>

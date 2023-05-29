@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: otel-demo
+  security:
+    user:
+      name: user
+      password: user
+      roles: admin
+  cloud:
+    gateway:
+      routes:
+        - id: route
+          uri: http://localhost:8085
+          predicates:
+            - Path=/world/**
+            - Host=localhost:8085
+          filters:
+            - RewritePath=/world(?<segment>/?.*), $\{segment}
+management:
+  tracing:
+    baggage:
+      remote-fields:
+        - accountId
+      correlation:
+        fields:
+          - accountId
+    sampling:
+      probability: 1.0
+    enabled: true
+  otlp:
+    metrics:
+      export:
+        enabled: true
+        resource-attributes:
+          service.name: ${spring.application.name}
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+
+server:
+  port: 8085
+
+logging:
+  level:
+    root: info
+#    org.springframework.cloud.gateway.filter.headers.observation: debug
+  config: classpath:logging/logging.xml 
+
+

@@ -1,0 +1,8 @@
+<configuration debug="true">
+  <include resource="logging/patterns.xml"/>
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+  <root>
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>

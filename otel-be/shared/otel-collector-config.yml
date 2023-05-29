@@ -1,0 +1,40 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+
+exporters:
+  otlp/traces:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: 0.0.0.0:8889
+  elasticsearch/logs:
+    endpoints: [ http://elasticsearch:9200 ]
+    logs_index: my_log_index
+    mapping:
+      mode: none
+    sending_queue:
+      enabled: true
+      num_consumers: 20
+      queue_size: 100
+  logging:
+    loglevel: debug
+service:
+  pipelines:
+    traces:
+      receivers: [ otlp ]
+      processors: [ ]
+      exporters: [ otlp/traces ]
+    metrics:
+      receivers: [ otlp ]
+      processors: [ ]
+      exporters: [ prometheus ]
+    logs:
+      receivers: [ otlp ]
+      processors: [ ]
+      exporters: [ elasticsearch/logs ]

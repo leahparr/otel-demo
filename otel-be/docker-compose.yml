@@ -1,0 +1,73 @@
+version: "3.9"
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus.yml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./shared/prometheus.yml:/etc/prometheus.yml
+      - ./prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yml"]
+    volumes:
+      - ./shared/tempo.yml:/etc/tempo.yml
+      - ./tempo-data:/tmp/tempo
+    restart: unless-stopped  
+    ports:
+      - "4317"  # OpenTelemetry grpc
+      - "4318"  # OpenTelemetry http
+      - "3200"  # tempo
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - ./shared/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./shared/grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./shared/grafana/dashboards:/var/lib/grafana/dashboards
+#      - ./grafana-data:/var/lib/grafana
+      
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - otel-collector
+      
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: [ --config=/etc/otel-collector-config.yml ]
+    volumes:
+      - ./shared/otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "4317:4317"          # OTLP over gRPC receiver
+      - "4318:4318"          # OTLP over HTTP receiver
+      - "8888:8888"          # Prometheus exporter otel collector
+      - "8889:8889"          # Prometheus exporter metrics
+      - "3200:3200"          # tempo endpoint
+    depends_on:
+      - tempo
+      - prometheus
+      - elasticsearch

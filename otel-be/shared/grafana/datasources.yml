@@ -1,0 +1,46 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: false
+    jsonData:
+      httpMethod: GET
+  - name: Tempo
+    type: tempo
+    uid: tempo
+    access: proxy
+    orgId: 1
+    url: http://tempo:3200
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: false
+    apiVersion: 1
+    jsonData:
+      httpMethod: GET
+      serviceMap:
+        datasourceUid: prometheus
+  - name: elasticsearch
+    type: elasticsearch
+    orgId: 1
+    access: proxy
+    database: 'my_log_index'
+    index: 'tlsSkipVerify: true'
+    url: http://elasticsearch:9200
+    jsonData:
+      tlsSkipVerify: true
+      timeField: '@timestamp'
+      logMessageField: Body
+      logLevelField: SeverityText
+      dataLinks:
+        - datasourceUid: tempo
+          field: TraceId
+          url: '$${__value.raw}'
